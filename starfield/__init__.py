@@ -1,4 +1,5 @@
 from typing import *
+
 from attrs import *
 
 
@@ -10,6 +11,7 @@ def starfield(cls: type, fields: List[Attribute]) -> list[Attribute]:
     star_field = fields[0]
     # Make all other fields kw-only.
     fields = [field if field == star_field else field.evolve(kw_only=True) for field in fields]
+
     # Construct __init__.
     def __init__(self, *args, **kwargs):
         if not hasattr(self, "__attrs_init__"):
@@ -17,7 +19,9 @@ def starfield(cls: type, fields: List[Attribute]) -> list[Attribute]:
         # The star field can be passed as a variadic positional argument or as a keyword argument.
         # Ensure it is not passed as both.
         if len(args) > 0 and star_field.name in kwargs:
-            raise ValueError(f"Cannot pass star field {star_field.name} as a keyword argument when there are variadic positional arguments")
+            raise ValueError(
+                f"Cannot pass star field {star_field.name} as a keyword argument when there are variadic positional arguments"
+            )
         # If variadic positional arguments are passed, add them to the keyword arguments.
         if len(args) > 0:
             kwargs[star_field.name] = args
