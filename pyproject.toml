@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "attrs-extensions"
+version = "0.1.0"
+description = ""
+authors = ["IsaacBreen <57783927+IsaacBreen@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{include = "attrs_extensions"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+attrs = "^22.2.0"
+delegatefn = "^0.2.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
