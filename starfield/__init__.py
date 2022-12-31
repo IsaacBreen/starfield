@@ -1,37 +1,32 @@
-from typing import *
+from typing import List
 
-from attrs import *
+from attrs import Attribute
 
 
-def starfield(cls: type, fields: List[Attribute]) -> list[Attribute]:
-    # Get fields with init="*" and raise an error if there isn't exactly one.
-    star_fields = [field for field in fields if field.init == "*"]
-    if len(star_fields) != 1:
-        raise ValueError(f"Expected exactly one field with init='*', got {len(star_fields)}: {star_fields}")
-    star_field = fields[0]
-    # Make all other fields kw-only.
-    fields = [field if field == star_field else field.evolve(kw_only=True) for field in fields]
+def starfield(target_class: type, attributes: List[Attribute]) -> List[Attribute]:
+    variadic_attributes = [attribute for attribute in attributes if attribute.init == "*"]
+    if len(variadic_attributes) != 1:
+        raise ValueError(
+            f"Expected exactly one attribute with init='*', got {len(variadic_attributes)}: {variadic_attributes}"
+        )
+    variadic_attribute = attributes[0]
 
-    # Construct __init__.
     def __init__(self, *args, **kwargs):
-        if not hasattr(self, "__attrs_init__"):
-            raise TypeError(f"Class {cls.__name__} has no __attrs_init__ method.")
-        # The star field can be passed as a variadic positional argument or as a keyword argument.
-        # Ensure it is not passed as both.
-        if len(args) > 0 and star_field.name in kwargs:
+        if variadic_attribute.name in kwargs and len(args) > 0:
             raise ValueError(
-                f"Cannot pass star field {star_field.name} as a keyword argument when there are variadic positional arguments"
+                f"Cannot pass star field {variadic_attribute.name} as a keyword argument when there are variadic positional arguments"
             )
-        # If variadic positional arguments are passed, add them to the keyword arguments.
-        if len(args) > 0:
-            kwargs[star_field.name] = args
-        # Call __attrs_init__.
+        kwargs[variadic_attribute.name] = args
         self.__attrs_init__(**kwargs)
 
-    if hasattr(cls, "__attrs_attrs__"):
-        if not hasattr(cls, "__attrs_init__"):
-            cls.__attrs_init__ = cls.__init__
-        cls.__init__ = __init__
+    if hasattr(target_class, "__attrs_attrs__"):
+        if not hasattr(target_class, "__attrs_init__"):
+            target_class.__attrs_init__ = target_class.__init__
+        target_class.__init__ = __init__
     else:
-        cls.__init__ = __init__
-    return fields
+        target_class.__init__ = __init__
+
+    return [
+        attribute if attribute == variadic_attribute else attribute.evolve(kw_only=True)
+        for attribute in attributes
+    ]
