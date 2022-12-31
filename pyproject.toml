@@ -1,17 +1,22 @@
 [tool.poetry]
-name = "attrs-extensions"
+name = "starfield"
 version = "0.1.0"
 description = ""
 authors = ["IsaacBreen <57783927+IsaacBreen@users.noreply.github.com>"]
 readme = "README.md"
-packages = [{include = "attrs_extensions"}]
+packages = [{include = "starfield"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
 attrs = "^22.2.0"
-delegatefn = "^0.2.0"
 
+[tool.poetry.dev-dependencies]
+pytest = "^7.2.0"
+pytest-codeblocks = "^0.16.1"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+addopts = "--codeblocks"
