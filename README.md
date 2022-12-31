@@ -1,4 +1,6 @@
-`starfield` allows you to create `attrs` classes with a single field that can be initialized using variadic positional arguments (i.e. the star `*`). This makes it easier to create complex data structures with `attrs` without having to explicitly pass a list to the initializer.
+# starfield
+
+`starfield` is a Python package that allows you to create `attrs` classes with a single field that can be initialized using variadic positional arguments (i.e. the star `*`). This makes it easier to initialise list-like structures with `attrs` without having to explicitly pass a list to the initializer.
 
 ## Installation
 
@@ -8,7 +10,7 @@ To install `starfield`, run the following command in your terminal:
 pip install starfield
 ```
 
-## Usage
+## Examples
 
 The following example shows how to use `starfield` to create a class that behaves like a list with some extra fields:
 
@@ -40,12 +42,6 @@ class ShoppingList:
 
 grocery_list = ShoppingList(["Milk", "Bread", "Eggs"], store="Supermarket")
 ```
-
-## Why Use `starfield`?
-
-Nested fields can quickly become unwieldy when initializing objects with `attrs`. `attrs`'s documentation [explains](https://www.attrs.org/en/stable/init.html#) why it's usually better to use a `classmethod` than to modify the initializer. `starfield` provides an alternative to using a `classmethod` by allowing you to define a single field that can be initialized using variadic positional arguments (i.e. the star `*`).
-
-### Nested Fields Example
 
 To illustrate the power of `starfield`, let's look at a more complex example involving nested fields. Suppose we want to create a data structure to represent a simple grammatical expression:
 
@@ -92,7 +88,14 @@ class Or:
 expr = And("I", [Or("love", "hate"), Or("cats", "dogs")])
 ```
 
-## Notes
+## Why Use `starfield`?
+
+Nested fields can quickly become unwieldy when initializing objects with `attrs`. `attrs`'s documentation [explains](https://www.attrs.org/en/stable/init.html#) why it's usually better to use a `classmethod` than to modify the initializer. But this can make initialization even more verbose.
+
+`starfield` provides an alternative to using a `classmethod` by allowing you to define a single field that can be initialized using variadic positional arguments (i.e. the star `*`).
+
+
+## Features
 
 - `starfield` will make all non-star fields keyword-only.
 
@@ -113,3 +116,11 @@ expr = And("I", [Or("love", "hate"), Or("cats", "dogs")])
 - [`pydantic`](https://docs.pydantic.dev/usage/models/#custom-root-types)'s root types serve a similar purpose. Notable, however, a class with a root type cannot have any other fields.
 
 Please let me know if I've missed any.
+
+## Dependencies
+
+`starfield` requires Python 3.9 or later and `attrs >= 22.2.0`.
+
+## Authors
+
+- [Isaac Breen](https://github.com/IsaacBreen)
