@@ -107,6 +107,8 @@ Nested fields can quickly become unwieldy when initializing objects with `attrs`
 
 - `starfield` only works with classes that use `attrs`.
 
+- You can only have one star field per class.
+
 - The behaviour of `starfield`'s `__repr__` method may be inconsistent with the [`attrs`-generated `__repr__` methods](https://github.com/python-attrs/attrs/blob/9fd0f82ff0d632136b95e1b8737b081e537aaaee/src/attr/_make.py#L1833) which are more complicated than one might expect.
 
 ## Related Projects
