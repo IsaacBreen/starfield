@@ -85,7 +85,7 @@ class Or:
     children: list = field()
 
 
-expr = And("I", [Or("love", "hate"), Or("cats", "dogs")])
+expr = And(["I", Or(["love", "hate"]), Or(["cats", "dogs"])])
 ```
 
 ## Why Use `starfield`?
