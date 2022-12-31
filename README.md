@@ -1,5 +1,5 @@
-Lets you define `attrs` classes with a single non-keyword-only field that can be initialised using
-var-positional (i.e. star `*`) arguments.
+`starfield` you define `attrs` classes with a single non-keyword-only field that can be initialised using
+variadic-positional (i.e. star `*`) arguments.
 
 ## Installation
 
@@ -26,7 +26,7 @@ naughty_list = SantaList("Bob", "Alice", is_naughty_list=True)
 ## Why?
 
 Sometimes you want to define a class that behaves like a list with some extra fields.
-Without an initializer with var-positional arguments, you would have to explicitly pass a list to the initializer:
+Without an initializer with variadic-positional arguments, you would have to explicitly pass a list to the initializer:
 
 ```python
 from attrs import define, field
@@ -105,8 +105,8 @@ expr = And("I", Or("love", "hate"), Or("cats", "dogs"))
 
 ## How?
 
-The `starfield` adds to the class an `__init__` method that accepts variadic positional arguments.
-The `__init__` method calls `__attrs_init__` with the variadic positional arguments passed as a tuple to the field with `init="*"`.
+The `starfield` adds to the class an `__init__` method that accepts variadic-positional arguments.
+The `__init__` method calls `__attrs_init__` with the variadic-positional arguments passed as a tuple to the field with `init="*"`.
 
 ### String representation
 
