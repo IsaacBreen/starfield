@@ -1,4 +1,4 @@
-`starfield` allows you to define `attrs` classes with a single field that can be initialised using variadic-positional arguments (i.e. star `*`).
+`starfield` allows you to create `attrs` classes with a single field that can be initialized using variadic positional arguments (i.e. the star `*`). This makes it easier to create complex data structures with `attrs` without having to explicitly pass a list to the initializer.
 
 ## Installation
 
@@ -41,15 +41,11 @@ class ShoppingList:
 grocery_list = ShoppingList(["Milk", "Bread", "Eggs"], store="Supermarket")
 ```
 
-## Why?
+## Why Use `starfield`?
 
-Nested fields can quickly become unwieldy when initializing objects with `attrs`. `attrs`'s documentation [explains](https://www.attrs.org/en/stable/init.html#) why it's usually better to use a `classmethod` than to modify the initializer.
+Nested fields can quickly become unwieldy when initializing objects with `attrs`. `attrs`'s documentation [explains](https://www.attrs.org/en/stable/init.html#) why it's usually better to use a `classmethod` than to modify the initializer. `starfield` provides an alternative to using a `classmethod` by allowing you to define a single field that can be initialized using variadic positional arguments (i.e. the star `*`).
 
-> Passing complex objects into __init__ and then using them to derive data for the class unnecessarily couples your new class with the old class which makes it harder to test and also will cause problems later. 
-
-> Generally speaking, the moment you think that you need finer control over how your class is instantiated than what attrs offers, it’s usually best to use a classmethod factory or to apply the builder pattern.
-
-### Nested fields
+### Nested Fields Example
 
 To illustrate the power of `starfield`, let's look at a more complex example involving nested fields. Suppose we want to create a data structure to represent a simple grammatical expression:
 
@@ -110,7 +106,7 @@ expr = And("I", [Or("love", "hate"), Or("cats", "dogs")])
 
 - The behaviour of `starfield`'s `__repr__` method may be inconsistent with the [`attrs`-generated `__repr__` methods](https://github.com/python-attrs/attrs/blob/9fd0f82ff0d632136b95e1b8737b081e537aaaee/src/attr/_make.py#L1833) which are more complicated than one might expect.
 
-## Related projects
+## Related Projects
 
 - This feature has been [requested and discussed here](https://github.com/python-attrs/attrs/issues/110). The use of `init="*"` is also proposed. 
 
