@@ -1,5 +1,4 @@
-`starfield` you define `attrs` classes with a single non-keyword-only field that can be initialised using
-variadic-positional (i.e. star `*`) arguments.
+`starfield` allows you to define `attrs` classes with a single non-keyword-only field that can be initialised using variadic-positional (i.e. star `*`) arguments.
 
 ## Installation
 
@@ -25,8 +24,7 @@ naughty_list = SantaList("Bob", "Alice", is_naughty_list=True)
 
 ## Why?
 
-Sometimes you want to define a class that behaves like a list with some extra fields.
-Without an initializer with variadic-positional arguments, you would have to explicitly pass a list to the initializer:
+Sometimes you want to define a class that behaves like a list with some extra fields. Without an initializer with variadic-positional arguments, you would have to explicitly pass a list to the initializer:
 
 ```python
 from attrs import define, field
@@ -41,22 +39,15 @@ class SantaList:
 naughty_list = SantaList(["Bob", "Alice"], is_naughty_list=True)
 ```
 
-This can get messy, especially if you have lots of nested fields.
+This can get messy, especially if you have lots of nested fields. `attrs`'s documentation [explains](https://www.attrs.org/en/stable/init.html#) why it's usually better to use a `classmethod` than to modify the initializer.
 
-`attrs`'s documentation [recommends](https://www.attrs.org/en/stable/init.html#) explains why it's usually better to use a `classmethod` than to
-modify the initializer.
-
-> Passing complex objects into __init__ and then using them to derive data for the class unnecessarily couples your new class with the old class which makes it harder to test and also will cause problems later.
+> Passing complex objects into __init__ and then using them to derive data for the class unnecessarily couples your new class with the old class which makes it harder to test and also will cause problems later. 
 
 > Generally speaking, the moment you think that you need finer control over how your class is instantiated than what attrs offers, it’s usually best to use a classmethod factory or to apply the builder pattern.
 
-
-
 ### Nested fields
 
-To motivate `starfield` more strongly, let's look at a more complex example involving nested fields.
-
-Suppose we want to create a data structure to represent a simple grammatical expression:
+To motivate `starfield` more strongly, let's look at a more complex example involving nested fields. Suppose we want to create a data structure to represent a simple grammatical expression:
 
 ```text
 "I" ( "love" | "hate" ) ( "cats" | "dogs" )
