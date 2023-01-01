@@ -1,20 +1,27 @@
-from typing import List
+from typing import List, TypeVar, Type
 
-from attrs import Attribute
+from attrs import Attribute, fields
+from delegatefn import delegate
+
+T = TypeVar("T")
+
+STARFIELD_KEY = type("STARFIELD_KEY", (), {})()
 
 
-def starfield(target_class: type, attributes: List[Attribute]) -> List[Attribute]:
+def starfield(target_class: Type[T]) -> Type[T]:
     """
     Modify a class to accept a "star field" argument. A star field is a special type of argument
     that is passed as a tuple of variadic positional arguments (i.e., "*args").
 
     :param target_class: The class to modify.
-    :param attributes: A list of Attribute objects for the class.
-    :return: A list of modified Attribute objects, with the star field included as is and the other
-        attributes having their `kw_only` attribute set to `True`.
+    :return: The modified class.
     """
-    # Find the attribute with `init` set to "*"
-    variadic_attributes = [attribute for attribute in attributes if attribute.init == "*"]
+    if not hasattr(target_class, "__attrs_attrs__"):
+        raise TypeError(f"Expected attrs class, but did not find __attrs_attrs__ attribute on {target_class}")
+    # Get the list of attributes defined on the class
+    attributes: List[Attribute] = fields(target_class)
+    # Find the attribute with metadata[STARFIELD_KEY]["is_starfield"] == True
+    variadic_attributes = [attribute for attribute in attributes if attribute.metadata.get(STARFIELD_KEY, {}).get("is_starfield")]
     # Raise an error if there is not exactly one such attribute
     if len(variadic_attributes) != 1:
         raise ValueError(
@@ -37,8 +44,7 @@ def starfield(target_class: type, attributes: List[Attribute]) -> List[Attribute
         self.__attrs_init__(**kwargs)
 
     # Modify the class to use the new `__init__` method
-    target_class.__attrs_init__ = getattr(target_class, "__attrs_init__", target_class.__init__)
-    target_class.__init__ = __init__
+    target_class.__init__ = __init__ # type: ignore[misc]
 
     # Return a list of modified Attribute objects
     return [attribute.evolve(kw_only=True) if attribute != variadic_attribute else attribute for attribute in
