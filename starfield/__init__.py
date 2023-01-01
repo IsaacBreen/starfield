@@ -8,12 +8,9 @@ def starfield(target_class: type, attributes: List[Attribute]) -> List[Attribute
     Modify a class to accept a "star field" argument. A star field is a special type of argument
     that is passed as a tuple of variadic positional arguments (i.e., "*args").
 
-    Parameters:
-        - target_class: The class to be modified.
-        - attributes: A list of Attribute objects for the class.
-
-    Returns:
-        A list of modified Attribute objects, with the star field included as is and the other
+    :param target_class: The class to modify.
+    :param attributes: A list of Attribute objects for the class.
+    :return: A list of modified Attribute objects, with the star field included as is and the other
         attributes having their `kw_only` attribute set to `True`.
     """
     # Find the attribute with `init` set to "*"
@@ -40,15 +37,9 @@ def starfield(target_class: type, attributes: List[Attribute]) -> List[Attribute
         self.__attrs_init__(**kwargs)
 
     # Modify the class to use the new `__init__` method
-    if hasattr(target_class, "__attrs_attrs__"):
-        if not hasattr(target_class, "__attrs_init__"):
-            target_class.__attrs_init__ = target_class.__init__
-        target_class.__init__ = __init__
-    else:
-        target_class.__init__ = __init__
+    target_class.__attrs_init__ = getattr(target_class, "__attrs_init__", target_class.__init__)
+    target_class.__init__ = __init__
 
     # Return a list of modified Attribute objects
-    return [
-        attribute if attribute == variadic_attribute else attribute.evolve(kw_only=True)
-        for attribute in attributes
-    ]
+    return [attribute.evolve(kw_only=True) if attribute != variadic_attribute else attribute for attribute in
+        attributes]
