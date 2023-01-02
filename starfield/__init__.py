@@ -49,8 +49,9 @@ def starfield(
                 raise ValueError(
                     f"Cannot pass star field {variadic_attribute.name} as a keyword argument when there are variadic positional arguments"
                 )
-            # Store the tuple of variadic positional arguments as the value for the star field in the `kwargs` dictionary
-            kwargs[variadic_attribute.name] = args
+            # If the `kwargs` dictionary doesn't already contain a value for the star field, use the tuple of variadic positional arguments
+            if variadic_attribute.name not in kwargs:
+                kwargs[variadic_attribute.name] = args
             # Call the original `__attrs_init__` method of the class, passing it the modified `kwargs` dictionary
             self.__attrs_init__(**kwargs)
 
