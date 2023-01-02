@@ -103,13 +103,21 @@ Nested fields can quickly become unwieldy when initializing objects with `attrs`
 
 - To make the string representation of the class more readable, `starfield` adds a `__rich_repr__` method to the class. However, this only works if you're using [rich](https://github.com/Textualize/rich) to stringify your objects. To add a `__repr__` method as well, you can pass `repr=True` to `starfield`.
 
-## Limitations
+## Limitations and Caveats
 
 - `starfield` only works with classes that use `attrs`.
 
 - You can only have one star field per class.
 
-- The behaviour of `starfield`'s `__repr__` method may be inconsistent with the [`attrs`-generated `__repr__` methods](https://github.com/python-attrs/attrs/blob/9fd0f82ff0d632136b95e1b8737b081e537aaaee/src/attr/_make.py#L1833) which are more complicated than one might expect.
+- The behaviour of `starfield`'s `__repr__` method may be inconsistent with the [`attrs`-generated `__repr__` methods](https://github.com/python-attrs/attrs/blob/9fd0f82ff0d632136b95e1b8737b081e537aaaee/src/attr/_make.py#L1833).
+
+- `starfield` is not yet `mypy`-compatible.
+  - In particular, `mypy` will complain about the following:
+      - `[arg-type]`: static type checkers won't recognize variadic positional arguments as valid arguments to the initializer.
+      - `[call-overload]` and `[misc]` on `field(init="*")`: `attrs` expects `init` to be a `bool`.
+  - As a workaround, you can suppress these errors using:
+    - `# type: ignore[arg-type]` upon initialization with variadic positional arguments, and
+    - `# type: ignore[call-overload, misc]` after `field(init="*")` in the class definition.
 
 ## Related Projects
 
