@@ -123,7 +123,7 @@ Nested fields can quickly become unwieldy when initializing objects with `attrs`
 
 - This feature has been [requested and discussed here](https://github.com/python-attrs/attrs/issues/110). The use of `init="*"` is also proposed. 
 
-- [`pydantic`](https://docs.pydantic.dev/usage/models/#custom-root-types)'s root types serve a similar purpose. Notable, however, a class with a root type cannot have any other fields.
+- [`pydantic`](https://docs.pydantic.dev/usage/models/#custom-root-types)'s root types serve a similar purpose. Notably, however, a class with a root type cannot have any other fields.
 
 Please let me know if I've missed any.
 
