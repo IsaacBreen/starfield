@@ -46,7 +46,7 @@ grocery_list = ShoppingList(["Milk", "Bread", "Eggs"], store="Supermarket")
 To illustrate the power of `starfield`, let's look at a more complex example involving nested fields. Suppose we want to create a data structure to represent a simple grammatical expression:
 
 ```text
-"I" ( "love" | "hate" ) ( "cats" | "dogs" )
+"I" ("love"|"hate") ("cats"|"dogs")
 ```
 
 We can define a class to represent this expression with `attrs` and `starfield`:
